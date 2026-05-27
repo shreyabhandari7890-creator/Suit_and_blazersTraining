@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suit Expert Training | Planet Fashion</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --black: #0a0a0a;
+    --gold: #C9953A;
+    --gold-light: #e8b96a;
+    --cream: #f5f0e8;
+    --white: #ffffff;
+    --red: #8B1A1A;
+    --navy: #1a2744;
+    --mid: #2d2d2d;
+    --soft: #f9f6f1;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1208 50%, #0a0a0a 100%);
+    padding: 60px 40px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(201,149,58,0.3);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(201,149,58,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .brand-bar {
+    display: inline-block;
+    background: var(--white);
+    color: var(--black);
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 14px;
+    letter-spacing: 4px;
+    padding: 8px 24px;
+    margin-bottom: 28px;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero-sub {
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 36px;
+  }
+  .badge-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    border: 1px solid rgba(201,149,58,0.4);
+    padding: 8px 20px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: var(--gold-light);
+    text-transform: uppercase;
+  }
+
+  /* ── SESSION NAV ── */
+  .session-nav {
+    background: #111;
+    border-bottom: 1px solid #222;
+    padding: 0 20px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    scrollbar-width: none;
+  }
+  .session-nav::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: rgba(255,255,255,0.4);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 18px 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover { color: var(--gold-light); }
+  .nav-btn.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+  .nav-num {
+    display: inline-block;
+    background: rgba(201,149,58,0.15);
+    color: var(--gold);
+    border-radius: 2px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-size: 11px;
+    margin-right: 8px;
+  }
+  .nav-btn.active .nav-num { background: var(--gold); color: var(--black); }
+
+  /* ── SECTIONS ── */
+  .section { display: none; padding: 50px 40px; max-width: 1100px; margin: 0 auto; }
+  .section.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  .section-header {
+    margin-bottom: 44px;
+  }
+  .section-tag {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .section-desc {
+    font-size: 15px;
+    color: rgba(255,255,255,0.55);
+    max-width: 600px;
+    line-height: 1.7;
+  }
+
+  /* ── GRID CARDS ── */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-bottom: 40px; }
+  .card {
+    background: #141414;
+    border: 1px solid #222;
+    padding: 28px;
+    transition: border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover { border-color: rgba(201,149,58,0.4); }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .card:hover::before { transform: scaleX(1); }
+  .card-icon { font-size: 28px; margin-bottom: 16px; }
+  .card-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+  .card-body { font-size: 14px; line-height: 1.75; color: rgba(255,255,255,0.6); }
+
+  /* ── GOLD DIVIDER ── */
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 40px 0; opacity: 0.3; }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight {
+    background: linear-gradient(135deg, rgba(201,149,58,0.08), rgba(201,149,58,0.03));
+    border: 1px solid rgba(201,149,58,0.25);
+    border-left: 3px solid var(--gold);
+    padding: 24px 28px;
+    margin-bottom: 28px;
+  }
+  .highlight-title { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .highlight p { font-size: 14px; line-height: 1.8; color: rgba(255,255,255,0.75); }
+
+  /* ── TABLE ── */
+  .styled-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; }
+  .styled-table th {
+    background: var(--gold);
+    color: var(--black);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .styled-table td {
+    padding: 14px 16px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    border-bottom: 1px solid #1e1e1e;
+  }
+  .styled-table tr:hover td { background: #141414; color: var(--white); }
+  .styled-table tr:last-child td { border-bottom: none; }
+
+  /* ── RULE BLOCKS ── */
+  .rule-list { list-style: none; margin-bottom: 32px; }
+  .rule-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid #1a1a1a;
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
+  }
+  .rule-list li::before {
+    content: '—';
+    color: var(--gold);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── OCCASION CARDS ── */
+  .occasion-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .occasion-card {
+    background: #141414;
+    border: 1px solid #222;
+    padding: 24px 20px;
+    text-align: center;
+    transition: all 0.25s;
+    cursor: default;
+  }
+  .occasion-card:hover { background: #1a1a1a; border-color: var(--gold); transform: translateY(-3px); }
+  .occasion-emoji { font-size: 32px; display: block; margin-bottom: 12px; }
+  .occasion-name { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--white); margin-bottom: 8px; }
+  .occasion-style { font-size: 12px; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+  .occasion-desc { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+  /* ── FLOW STEPS ── */
+  .flow { display: flex; gap: 0; margin-bottom: 32px; flex-wrap: wrap; }
+  .flow-step {
+    flex: 1;
+    min-width: 140px;
+    background: #141414;
+    border: 1px solid #222;
+    padding: 20px 16px;
+    text-align: center;
+    position: relative;
+  }
+  .flow-step:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gold);
+    font-size: 18px;
+    z-index: 2;
+    background: var(--black);
+    padding: 0 4px;
+  }
+  .flow-num { font-size: 10px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
+  .flow-item { font-size: 14px; font-weight: 600; color: var(--white); }
+  .flow-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+
+  /* ── ACCORDION ── */
+  .accordion { margin-bottom: 12px; border: 1px solid #222; }
+  .accordion-header {
+    background: #141414;
+    padding: 18px 24px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--white);
+    transition: background 0.2s;
+    user-select: none;
+  }
+  .accordion-header:hover { background: #1a1a1a; }
+  .accordion-header .toggle { color: var(--gold); font-size: 20px; line-height: 1; }
+  .accordion-body { display: none; padding: 20px 24px; background: #0f0f0f; font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.8; }
+  .accordion-body.open { display: block; }
+  .accordion-body ul { padding-left: 16px; }
+  .accordion-body li { margin-bottom: 8px; }
+
+  /* ── SCRIPT BOX ── */
+  .script-box {
+    background: #0d0d0d;
+    border: 1px solid #2a2a2a;
+    border-left: 3px solid var(--gold);
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .script-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .script-text { font-size: 14px; color: rgba(255,255,255,0.8); line-height: 1.75; font-style: italic; }
+  .script-note { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 8px; font-style: normal; }
+
+  /* ── QUIZ ── */
+  .quiz-section { margin-bottom: 40px; }
+  .quiz-header {
+    background: linear-gradient(90deg, var(--navy), #0f1a35);
+    border: 1px solid rgba(201,149,58,0.3);
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .quiz-header .q-badge {
+    background: var(--gold);
+    color: var(--black);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    white-space: nowrap;
+  }
+  .quiz-header p { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.6; }
+  .question-block { background: #141414; border: 1px solid #222; margin-bottom: 16px; }
+  .question-text { padding: 18px 22px; font-size: 14px; font-weight: 600; color: var(--white); border-bottom: 1px solid #1e1e1e; }
+  .q-num { color: var(--gold); margin-right: 10px; }
+  .options { padding: 16px 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .option {
+    background: #0f0f0f;
+    border: 1px solid #2a2a2a;
+    padding: 11px 16px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    cursor: pointer;
+    transition: all 0.18s;
+    user-select: none;
+  }
+  .option:hover { background: #1a1a1a; border-color: rgba(201,149,58,0.3); color: var(--white); }
+  .option.correct { background: rgba(34,85,34,0.25); border-color: #3a7a3a; color: #7ec87e; }
+  .option.wrong { background: rgba(100,20,20,0.3); border-color: #7a2a2a; color: #e06060; }
+  .option.disabled { pointer-events: none; }
+  .q-feedback { padding: 10px 22px 16px; font-size: 13px; display: none; }
+  .q-feedback.show { display: block; }
+  .q-feedback.ok { color: #7ec87e; }
+  .q-feedback.bad { color: #e06060; }
+
+  .quiz-score {
+    background: #111;
+    border: 1px solid #333;
+    padding: 24px 28px;
+    text-align: center;
+    display: none;
+  }
+  .quiz-score.show { display: block; }
+  .score-num { font-family: 'Playfair Display', serif; font-size: 52px; color: var(--gold); font-weight: 900; }
+  .score-label { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 10px; }
+  .score-verdict { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+  .verdict-pass { color: #7ec87e; }
+  .verdict-fail { color: #e06060; }
+  .btn-retry {
+    background: none;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 12px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+  }
+  .btn-retry:hover { background: var(--gold); color: var(--black); }
+
+  /* ── CERT BADGE ── */
+  .cert-display {
+    text-align: center;
+    padding: 50px 20px;
+    background: linear-gradient(135deg, #0a0a0a, #141008, #0a0a0a);
+    border: 1px solid rgba(201,149,58,0.3);
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cert-display::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1px solid rgba(201,149,58,0.15);
+    pointer-events: none;
+  }
+  .cert-crown { font-size: 48px; margin-bottom: 16px; display: block; }
+  .cert-title { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--gold); font-weight: 900; margin-bottom: 6px; }
+  .cert-sub { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 24px; }
+  .cert-desc { font-size: 14px; color: rgba(255,255,255,0.6); max-width: 450px; margin: 0 auto; line-height: 1.7; }
+
+  /* ── 2 COL ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
+  @media (max-width: 640px) {
+    .two-col { grid-template-columns: 1fr; }
+    .options { grid-template-columns: 1fr; }
+    .flow { flex-direction: column; }
+    .flow-step:not(:last-child)::after { content: '↓'; right: auto; left: 50%; bottom: -14px; top: auto; transform: translateX(-50%); }
+    .section { padding: 30px 20px; }
+  }
+
+  /* ── KPI TABLE ── */
+  .kpi-tag { display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 2px; font-weight: 600; letter-spacing: 1px; }
+  .kpi-daily { background: rgba(139,26,26,0.25); color: #e07070; border: 1px solid rgba(139,26,26,0.4); }
+  .kpi-weekly { background: rgba(26,39,68,0.5); color: #7090e0; border: 1px solid rgba(26,39,68,0.8); }
+  .kpi-monthly { background: rgba(201,149,58,0.15); color: var(--gold-light); border: 1px solid rgba(201,149,58,0.3); }
+
+  /* ── NEW BADGE ── */
+  .new-badge { display: inline-block; background: var(--gold); color: var(--black); font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 2px 8px; vertical-align: middle; margin-left: 8px; }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap { margin-bottom: 32px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: rgba(255,255,255,0.45); margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
+  .progress-bar { height: 4px; background: #222; }
+  .progress-fill { height: 100%; background: var(--gold); transition: width 0.5s ease; }
+
+  /* ── SUIT TYPE GRID ── */
+  .suit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .suit-card {
+    border: 1px solid #222;
+    background: #141414;
+    padding: 24px 18px;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .suit-card:hover { border-color: var(--gold); }
+  .suit-type { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--white); margin-bottom: 8px; }
+  .suit-occasion { font-size: 11px; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .suit-note { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #111; }
+  ::-webkit-scrollbar-thumb { background: #333; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="brand-bar">Planet Fashion</div>
+  <h1>Suit <span>Expert</span><br>Training</h1>
+  <p class="hero-sub">Stay in Style · Suit Bole Toh AS–VH–LP</p>
+  <div class="badge-row">
+    <div class="badge">5 Sessions</div>
+    <div class="badge">Product · Occasions · Hosting · Grooming · Certification</div>
+    <div class="badge">75% to Certify</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="session-nav">
+  <button class="nav-btn active" onclick="showSection('s1', this)">
+    <span class="nav-num">1</span>Product Knowledge
+  </button>
+  <button class="nav-btn" onclick="showSection('s2', this)">
+    <span class="nav-num">2</span>Wedding Occasions ✦
+  </button>
+  <button class="nav-btn" onclick="showSection('s3', this)">
+    <span class="nav-num">3</span>Hosting & Selling ✦
+  </button>
+  <button class="nav-btn" onclick="showSection('s4', this)">
+    <span class="nav-num">4</span>Grooming
+  </button>
+  <button class="nav-btn" onclick="showSection('s5', this)">
+    <span class="nav-num">5</span>Certification ✦
+  </button>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SESSION 1: PRODUCT KNOWLEDGE -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="section active" id="s1">
+  <div class="section-header">
+    <p class="section-tag">Session 01 — Product Knowledge</p>
+    <h2 class="section-title">Mastering the<br>Art of Suit Wear</h2>
+    <p class="section-desc">Everything a Suit Expert needs to know — from anatomy and construction to sizing and fit. This is your foundation.</p>
+  </div>
+
+  <div class="highlight">
+    <div class="highlight-title">Session Goal</div>
+    <p>Equip staff with the knowledge and skills to choose, wear, and care for suits with confidence. Audience: CCAs, SMs, and anyone handling the S&B floor.</p>
+  </div>
+
+  <p class="section-tag" style="margin-bottom:16px">TYPES OF SUIT</p>
+  <div class="suit-grid">
+    <div class="suit-card">
+      <div class="suit-type">Blazer</div>
+      <div class="suit-occasion">Casual & Formal</div>
+      <div class="suit-note">Stand-alone jacket, no matching trouser. Worn casually with chinos or formally with dress trousers. Most versatile piece in S&B.</div>
+    </div>
+    <div class="suit-card">
+      <div class="suit-type">2-Piece Suit</div>
+      <div class="suit-occasion">Formal & Wedding/Ceremonial</div>
+      <div class="suit-note">Jacket + matching trouser. Works for office, interviews, and formal occasions — as well as weddings and ceremonial events.</div>
+    </div>
+    <div class="suit-card">
+      <div class="suit-type">3-Piece Suit</div>
+      <div class="suit-occasion">Mostly Ceremonial & Wedding</div>
+      <div class="suit-note">Jacket + trouser + waistcoat. Primarily worn for weddings and ceremonial occasions. An elevated, statement look.</div>
+    </div>
+    <div class="suit-card">
+      <div class="suit-type">Bandhgala</div>
+      <div class="suit-occasion">Indian Formal</div>
+      <div class="suit-note">Stand collar, mandarin style. Ideal for Indian weddings and evening events.</div>
+    </div>
+    <div class="suit-card">
+      <div class="suit-type">Double Breasted</div>
+      <div class="suit-occasion">Formal – Power</div>
+      <div class="suit-note">Extremely formal. Best on slim frames. Peak lapel standard.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-tag" style="margin-bottom:16px">TYPES OF LAPEL</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🔷</div>
+      <div class="card-title">Notch Lapel</div>
+      <div class="card-body">A triangular V-shaped indentation (the "notch") where the collar meets the lapel, creating a step shape. The most common lapel — classic and versatile. Works for both casual and professional looks. Found on most single-breasted PF suits.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">▲</div>
+      <div class="card-title">Peak Lapel</div>
+      <div class="card-body">The lapel extends <strong>outward and upward toward the shoulders</strong> on both sides, forming a sharp point. Naturally wider and broader than the notch lapel — adds visual width to shoulders and a commanding, formal look. Standard on double-breasted suits. Ideal for weddings and formal occasions.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">〇</div>
+      <div class="card-title">Shawl Lapel</div>
+      <div class="card-body">A smooth, continuous curved edge with <strong>no gorge line or notch at all</strong> — the collar and lapel are one single unbroken piece. The most elegant and minimalist of the three. Found exclusively on tuxedos and dinner jackets. Used for black-tie and very formal evening events.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-tag" style="margin-bottom:16px">JACKET CONSTRUCTION — WHAT GOES INSIDE</p>
+  <div class="two-col">
+    <div>
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">Canvas Construction <span class="toggle">+</span></div>
+        <div class="accordion-body">
+          <ul>
+            <li><strong>Chest canvas</strong> gives shape, structure and strength</li>
+            <li>Full canvas is the <strong>traditional and highest grade</strong> of construction</li>
+            <li>Conforms to body shape after multiple wears</li>
+            <li>More durable, breathes better, allows natural drape</li>
+            <li>Layers: Camel Hair → Horse Hair → Horse Tail</li>
+            <li>This is why premium suits justify their price</li>
+          </ul>
+        </div>
+      </div>
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">Lining <span class="toggle">+</span></div>
+        <div class="accordion-body">
+          <ul>
+            <li>Shiny fabric inside the Coat/Blazer</li>
+            <li>Provides ease of movement and prevents creasing</li>
+            <li>Adds structure and weight to the suit</li>
+            <li>Made of Polyester/Acetate/Viscose/Bemberg Twill</li>
+            <li>Sleeve lining = striped; brands use signature lining</li>
+          </ul>
+        </div>
+      </div>
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">Key Trims <span class="toggle">+</span></div>
+        <div class="accordion-body">
+          <ul>
+            <li><strong>Sleeve Head Roll</strong>: ensures zero puckering at shoulders</li>
+            <li><strong>Shoulder Pad</strong>: shapes contour of shoulder perfectly</li>
+            <li><strong>Under Collar Felt</strong>: prevents neck bouncing; easy fit around neck</li>
+          </ul>
+        </div>
+      </div>
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">Why Wool Blends Are Premium <span class="toggle">+</span></div>
+        <div class="accordion-body">
+          <ul>
+            <li>Natural fabric — breathable in summer, warm in winter</li>
+            <li>Great colour retention</li>
+            <li>Very durable — lasts significantly longer</li>
+            <li>Naturally wrinkle-resistant</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">Vents in Jacket <span class="toggle">+</span></div>
+        <div class="accordion-body">
+          <ul>
+            <li><strong>Single Vent (American)</strong>: Center vent. Most common. Practical.</li>
+            <li><strong>Double Vents (English)</strong>: Side vents. Most formal. Best movement.</li>
+            <li><strong>No Vent (Italian)</strong>: Cleanest silhouette. Less movement.</li>
+            <li>Vents stop the jacket from creasing when moving</li>
+          </ul>
+        </div>
+      </div>
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">Button Rules <span class="toggle">+</span></div>
+        <div class="accordion-body">
+          <ul>
+            <li><strong>1-button</strong>: Always button when standing. Unbutton sitting.</li>
+            <li><strong>2-button</strong>: Top button ALWAYS. Bottom button NEVER.</li>
+            <li><strong>3-button</strong>: Middle ALWAYS. Top optional. Bottom NEVER.</li>
+            <li>Rule of thumb: <em>Sometimes, Always, Never</em></li>
+          </ul>
+        </div>
+      </div>
+      <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">Tuxedo vs Suit <span class="toggle">+</span></div>
+        <div class="accordion-body">
+          <ul>
+            <li>Tuxedos → bow ties; Suits → with or without a tie</li>
+            <li>Tuxedo lapels are satin; suit lapels match fabric</li>
+            <li>Tuxedos have satin buttons; suits have regular buttons</li>
+            <li>Tuxedo trousers have a satin stripe; suit trousers don't</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-tag" style="margin-bottom:16px">FIT — THE MOST IMPORTANT THING</p>
+  <div class="highlight">
+    <div class="highlight-title">Why Right Fit Matters</div>
+    <p>Comfort · Makes you stand out · Hides asymmetry and flaws · Highlights shoulders and chest · Gives a natural V shape · Builds confidence. A well-fitted suit is always the best suit regardless of price.</p>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <p class="section-tag" style="margin-bottom:12px">SIZE GUIDE — SUIT & BLAZER</p>
+      <table class="styled-table">
+        <tr><th>Inches</th><th>36</th><th>38</th><th>40</th><th>42</th><th>44</th><th>46</th></tr>
+        <tr><td>CM</td><td>92</td><td>96</td><td>100</td><td>104</td><td>108</td><td>112</td></tr>
+      </table>
+      <div class="highlight" style="margin-top:0">
+        <div class="highlight-title">6-inch Drop Rule</div>
+        <p>Blazer to trouser = 6 inches. Blazer size 38 → Trouser 32. Blazer 42 → Trouser 36. Always verify this when selling a suit.</p>
+      </div>
+    </div>
+    <div>
+      <p class="section-tag" style="margin-bottom:12px">FIT CHECK POINTS</p>
+      <ul class="rule-list">
+        <li>Jacket sleeve: 1 inch shirt cuff visible</li>
+        <li>Trouser: one crease at shoe = perfect length</li>
+        <li>Shoulder seam sits at edge of shoulder — not hanging</li>
+        <li>Jacket collar smooth against shirt collar</li>
+        <li>Trouser waist: 1 finger insert under waistband</li>
+        <li>No pulling at chest when buttoned</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-tag" style="margin-bottom:16px">HOW TO TAKE MEASUREMENTS</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">📏</div>
+      <div class="card-title">Chest Measurement</div>
+      <div class="card-body">
+        Wrap the measuring tape around the <strong>widest part of the chest</strong>.<br><br>
+        Run the tape <strong>under the arms</strong> — not over them.<br><br>
+        Insert <strong>1–2 fingers</strong> under the tape before finalising the suit size to allow ease of movement.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">↔️</div>
+      <div class="card-title">Shoulder Measurement</div>
+      <div class="card-body">
+        Run the tape across the <strong>back</strong> from one tip of the shoulder to the other.<br><br>
+        The tape should follow the <strong>natural curve</strong> of the shoulders.<br><br>
+        Take a helping hand if necessary for accuracy.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">💪</div>
+      <div class="card-title">Sleeve Measurement</div>
+      <div class="card-body">
+        Keep the arm <strong>relaxed at the side</strong>.<br><br>
+        Measure from the shoulder seam down the outside of the arm.<br><br>
+        Stop at the <strong>base of the thumb</strong> — that is the ideal sleeve end point.
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-tag" style="margin-bottom:16px">TYPES OF ALTERATION</p>
+  <div class="two-col">
+    <div>
+      <p class="section-tag" style="margin-bottom:12px; font-size:10px">BLAZER ALTERATIONS</p>
+      <table class="styled-table">
+        <thead><tr><th>Alteration</th><th>What It Fixes</th></tr></thead>
+        <tbody>
+          <tr><td>Sleeve Length</td><td>Too long or short — most common alteration</td></tr>
+          <tr><td>Jacket Length</td><td>Hem shortened if jacket too long</td></tr>
+          <tr><td>Taking In / Letting Out</td><td>Body width at sides — adjusts chest and waist fit</td></tr>
+          <tr><td>Shoulder Adjustment</td><td>Complex — done only when shoulder seam placement is off</td></tr>
+        </tbody>
+      </table>
+      <p class="section-tag" style="margin-bottom:12px; margin-top:20px; font-size:10px">SHIRT ALTERATIONS</p>
+      <table class="styled-table">
+        <thead><tr><th>Alteration</th><th>What It Fixes</th></tr></thead>
+        <tbody>
+          <tr><td>Sleeve Length</td><td>Shortening only — never lengthen a shirt sleeve</td></tr>
+          <tr><td>Body Taper</td><td>Taking in sides for a slimmer silhouette</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <p class="section-tag" style="margin-bottom:12px; font-size:10px">TROUSER ALTERATIONS</p>
+      <table class="styled-table">
+        <thead><tr><th>Alteration</th><th>What It Fixes</th></tr></thead>
+        <tbody>
+          <tr><td>Hem / Length</td><td>Most common — shorten to one-crease perfect break</td></tr>
+          <tr><td>Waist</td><td>Taking in or letting out — up to 1 inch typically</td></tr>
+          <tr><td>Seat</td><td>Loosening or tightening across the seat area</td></tr>
+          <tr><td>Thigh Taper</td><td>Slimming the leg from thigh to hem</td></tr>
+        </tbody>
+      </table>
+      <div class="highlight" style="margin-top:20px">
+        <div class="highlight-title">Alteration as a Closing Tool</div>
+        <p>Never let a near-fit be the reason a customer walks out. Always say: <em>"Sir, our expert tailor will get this fitted perfectly before your function — no extra charge."</em> Alteration converts near-buys into definite sales.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-tag" style="margin-bottom:16px">PF COLLECTION HIGHLIGHTS</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title" style="color:var(--gold)">The Grand Ball</div>
+      <div class="card-body">Ceremonial tuxedo collection for weddings. Bold, vibrant colors. Statement pieces. "Teach India to Tux."</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--gold)">The Sapphire Stag</div>
+      <div class="card-body">Own the Shiny Blue. Deep navy and sapphire tones. Widest 3-piece suit assortment. The signature wedding suit.</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--gold)">Richard Branson Collection</div>
+      <div class="card-body">Unblue for Business. The Solly Staples. Power greys, checks, and textures for the business professional.</div>
+    </div>
+  </div>
+
+  <div class="highlight">
+    <div class="highlight-title">Our Promise — Why PF Wins</div>
+    <p>1. Wool-heavy fabric quality &nbsp;·&nbsp; 2. Widest 3-piece suit collection in the market &nbsp;·&nbsp; 3. Tuxedo collection for weddings &nbsp;·&nbsp; 4. Highest number of options vs any competitor &nbsp;·&nbsp; 5. All categories: Suits · Blazers · Shirts · Ties · Pocket Squares · Shoes · Belts</p>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SESSION 2: WEDDING OCCASIONS (NEW) -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="section" id="s2">
+  <div class="section-header">
+    <p class="section-tag">Session 02 — Wedding Occasions + Complete Look <span class="new-badge">New</span></p>
+    <h2 class="section-title">The Wedding<br>Groom's Journey</h2>
+    <p class="section-desc">Wedding customers spend 60+ minutes deciding and always bring family. Understand their occasion-driven needs to sell a complete look, not just a garment.</p>
+  </div>
+
+  <div class="highlight">
+    <div class="highlight-title">Key Insight — The Wedding Customer</div>
+    <p>A wedding customer is not a walk-in. They come with family, spend time, and have an emotional stake in the decision. Your job is to be their <em>Suit Expert</em> — not just a salesperson. One customer can mean multiple purchases: Mehendi, Baraat, Reception, Cocktail.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-tag" style="margin-bottom:20px">THE FOUR WEDDING OCCASIONS — KNOW YOUR OCCASION</p>
+  <div class="occasion-grid">
+    <div class="occasion-card">
+      <span class="occasion-emoji">🌸</span>
+      <div class="occasion-name">Mehendi</div>
+      <div class="occasion-style">Festive · Colourful</div>
+      <div class="occasion-desc">Day function, informal. Pastels, light checks, linen blends. Blazer with chinos works perfectly. Bright colours encouraged.</div>
+    </div>
+    <div class="occasion-card">
+      <span class="occasion-emoji">🎺</span>
+      <div class="occasion-name">Baraat</div>
+      <div class="occasion-style">Grand · Statement</div>
+      <div class="occasion-desc">The groom's main event. 3-piece or Bandhgala. Deep jewel tones — navy, maroon, ivory. The Grand Ball collection. This is your biggest ticket sale.</div>
+    </div>
+    <div class="occasion-card">
+      <span class="occasion-emoji">💍</span>
+      <div class="occasion-name">Reception</div>
+      <div class="occasion-style">Elegant · Formal</div>
+      <div class="occasion-desc">Evening event, semi-formal. Classic 2P or 3P suit. Sapphire Stag collection. Navy with gold accessories. Smart and sharp.</div>
+    </div>
+    <div class="occasion-card">
+      <span class="occasion-emoji">🥂</span>
+      <div class="occasion-name">Cocktail</div>
+      <div class="occasion-style">Trendy · Confident</div>
+      <div class="occasion-desc">Evening party wear. Shiny tuxedo or bold blazer. Statement colours. Bow tie or no tie. The Grand Ball tuxedos excel here.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-tag" style="margin-bottom:16px">THE COMPLETE LOOK — HOW TO SELL MORE</p>
+  <div class="highlight">
+    <div class="highlight-title">Never Sell Just the Suit</div>
+    <p>Every suit sale is an opportunity for a complete look. A customer who came for a suit should leave with a full ensemble. This is how you increase ABV.</p>
+  </div>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-num">Step 1</div>
+      <div class="flow-item">Suit</div>
+      <div class="flow-sub">The anchor piece</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">Step 2</div>
+      <div class="flow-item">Shirt</div>
+      <div class="flow-sub">Ceremonial solids/jacquards</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">Step 3</div>
+      <div class="flow-item">Tie / Bow</div>
+      <div class="flow-sub">Occasion-appropriate</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">Step 4</div>
+      <div class="flow-item">Belt</div>
+      <div class="flow-sub">Match shoe colour</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">Step 5</div>
+      <div class="flow-item">Shoes</div>
+      <div class="flow-sub">Use the suit-shoe guide</div>
+    </div>
+  </div>
+
+  <p class="section-tag" style="margin-bottom:16px; margin-top:32px">SUIT COLOR GUIDE</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">Navy Blue</div>
+      <div class="card-body"><strong style="color:var(--gold)">White shirt</strong> + Brown/grey/red tie<br><strong style="color:var(--gold)">Light blue shirt</strong> + Dark blue/red tie<br><strong style="color:var(--gold)">Pink shirt</strong> + Red tie</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Grey</div>
+      <div class="card-body"><strong style="color:var(--gold)">White shirt</strong> + Black or navy tie<br><strong style="color:var(--gold)">Pink shirt</strong> + Burgundy tie<br><strong style="color:var(--gold)">Light blue shirt</strong> + Darker shade of blue</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Black</div>
+      <div class="card-body"><strong style="color:var(--gold)">White shirt</strong> + Red or blue tie<br><strong style="color:var(--gold)">Pink shirt</strong> + Navy-pink combination</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Brown / Tan</div>
+      <div class="card-body"><strong style="color:var(--gold)">White shirt</strong> + Yellow, black, yellow stripe<br><strong style="color:var(--gold)">Pink shirt</strong> + Brown or purple</div>
+    </div>
+  </div>
+
+  <div class="highlight">
+    <div class="highlight-title">Key Colour Rules (for CCA)</div>
+    <p>Tie needs to be darker than the shirt · Tie should contrast the shirt colour · Match tie and pocket square colour · Pocket square should contrast the suit · Neutral colours (beige, ivory, black, grey, white) match everything</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-tag" style="margin-bottom:16px">CLEVER DRESSING BY BODY TYPE</p>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Big Body</div>
+      <div class="card-body">
+        <p style="margin-bottom:8px"><strong style="color:var(--gold)">Colours:</strong> Dark colours — they slim and lengthen</p>
+        <p><strong style="color:var(--gold)">Patterns:</strong> Small checks · Slim vertical stripes · Smaller/micro prints</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Thin / Small Body</div>
+      <div class="card-body">
+        <p style="margin-bottom:8px"><strong style="color:var(--gold)">Colours:</strong> Light and bright colours — they add volume</p>
+        <p><strong style="color:var(--gold)">Patterns:</strong> Big window checks · Horizontal stripes · Bigger prints</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-tag" style="margin-bottom:16px">ROLE-PLAY EXERCISE <span class="new-badge">Interactive</span></p>
+  <div class="highlight">
+    <div class="highlight-title">Scenario: The Wedding Groom</div>
+    <p>A customer walks in with his mother and brother-in-law. He says: <em>"Shadi ke liye kuch chahiye."</em> He has 4 functions. Practice this conversation with a partner. SM gives feedback on occasion identification, complete look suggestion, and closing technique.</p>
+  </div>
+  <div class="script-box">
+    <div class="script-label">Opening — CCA</div>
+    <div class="script-text">"Congratulations Sir! Please have a seat. Would you like some water? Tell me — which functions are coming up? We have the perfect look for each occasion."</div>
+    <div class="script-note">→ Seat the family. Get water. Identify ALL occasions before showing any product.</div>
+  </div>
+  <div class="script-box">
+    <div class="script-label">Occasion Discovery — CCA</div>
+    <div class="script-text">"For the Baraat, Sir, I'd recommend the 3-piece — it commands the room. For the reception, a crisp navy 2-piece. And for cocktail, we have this..." [lead to statement piece]</div>
+    <div class="script-note">→ Map each occasion to a suit before customer asks. You become the expert, not just the salesperson.</div>
+  </div>
+  <div class="script-box">
+    <div class="script-label">Complete Look Upsell — CCA</div>
+    <div class="script-text">"Sir, let me show you the complete look — the shirt, tie and pocket square we've matched with this. The shoes and belt are right here as well. Your family will love how this comes together."</div>
+    <div class="script-note">→ Always present as a complete styled look. Never just the jacket.</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SESSION 3: HOSTING & SELLING (NEW) -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="section" id="s3">
+  <div class="section-header">
+    <p class="section-tag">Session 03 — Hosting + Selling <span class="new-badge">New</span></p>
+    <h2 class="section-title">The Suit Expert<br>Experience</h2>
+    <p class="section-desc">A wedding customer doesn't just buy a suit — they buy an experience. How you host them is as important as what you show them.</p>
+  </div>
+
+  <div class="highlight">
+    <div class="highlight-title">The Reality of a Wedding Customer</div>
+    <p>Wedding customers spend <strong style="color:var(--gold)">60+ minutes</strong> in the S&B section. They bring family. A long visit without conversion is a staffing issue AND a lost sale. The way you host — water, seating, warmth — determines whether they buy or walk.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-tag" style="margin-bottom:20px">THE HOSTING PROTOCOL</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">💧</div>
+      <div class="card-title">Greet + Water Within 5 Min</div>
+      <div class="card-body">As soon as a customer enters the S&B section, greet them warmly and offer water on a tray within 5 minutes. This is non-negotiable. It sets the tone for the entire visit.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🛋️</div>
+      <div class="card-title">Seat the Family First</div>
+      <div class="card-body">The decision to buy a wedding suit is always a family decision. Offer seating before you show any product. A comfortable family is a buying family.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <div class="card-title">Ask the Occasion</div>
+      <div class="card-body">Before showing any garment: "Which function is this for, Sir?" The wedding ritual (water, seating, full consultation) is only triggered after the CCA confirms it is a wedding visit.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎁</div>
+      <div class="card-title">Gift at Purchase</div>
+      <div class="card-body">On purchase, present a chocolate box (₹150–200) as a groom's token of celebration. This small gesture creates a memorable moment and drives word-of-mouth. Funded by the Wedding Zone activation.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-tag" style="margin-bottom:16px">LOS MANAGEMENT — CRITICAL <span class="new-badge">New</span></p>
+
+  <div class="highlight">
+    <div class="highlight-title">What is LOS?</div>
+    <p>Loss of Sale (LOS) — a customer who visits the S&B section but does not make a purchase. Every LOS must be logged. Capturing this data drives follow-up and reveals conversion gaps.</p>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <p class="section-tag" style="margin-bottom:12px">WALK-OUT PROTOCOL</p>
+      <ul class="rule-list">
+        <li>Every walk-out must be logged in the LOS register by name</li>
+        <li>Note reason if possible: price, size unavailable, came back later</li>
+        <li>Log must happen same day — no next-day entry</li>
+        <li>SM reviews LOS register at end of each day</li>
+        <li>Target: 100% same-day logging</li>
+      </ul>
+    </div>
+    <div>
+      <p class="section-tag" style="margin-bottom:12px">48-HR FOLLOW-UP</p>
+      <ul class="rule-list">
+        <li>WhatsApp follow-up within 48 hours of walk-out</li>
+        <li>Personalise: use their name, reference the occasion</li>
+        <li>Offer to hold a style or check size availability</li>
+        <li>Do not push — invite back for a better consultation</li>
+        <li>SM tracks follow-up completion weekly</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-tag" style="margin-bottom:16px">CRITICAL SUCCESS FACTORS — SELLING</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">💰</div>
+      <div class="card-title">Pricing Advantage</div>
+      <div class="card-body">Best quality at best pricing. PF offers wool-blend construction at accessible price points. Know your competitor prices to articulate this clearly.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <div class="card-title">Right Product for Occasion</div>
+      <div class="card-body">Shadi ka suit · Interview ka suit · Barati wala suit · Meeting wala suit. Map the product to the moment. Customers don't buy suits — they buy occasions.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">👔</div>
+      <div class="card-title">Trial with Complete Ensemble</div>
+      <div class="card-body">Suit + Shirt + Accessories + Shoes — always put together the full look before the trial. The customer decides on feel, not just fit. Style the mannequin, not just hang the jacket.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">✂️</div>
+      <div class="card-title">Alteration Promise</div>
+      <div class="card-body">Expert tailors in-store. Use this as a closing tool: "Sir, we'll get this fitted perfectly for your function." Alteration turns a near-fit into a sure-buy.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-tag" style="margin-bottom:16px">8 KPIs TO TRACK WEDDING BUSINESS</p>
+  <table class="styled-table">
+    <thead>
+      <tr><th>KPI</th><th>Definition</th><th>Target</th><th>Frequency</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Wedding NSV</strong></td>
+        <td>Monthly S&B net sales value by store</td>
+        <td>+10% YoY same season</td>
+        <td><span class="kpi-tag kpi-monthly">Monthly</span></td>
+      </tr>
+      <tr>
+        <td><strong>Wedding ABV</strong></td>
+        <td>Net Sales Value ÷ S&B bills</td>
+        <td>TBD by store price mix</td>
+        <td><span class="kpi-tag kpi-monthly">Monthly</span></td>
+      </tr>
+      <tr>
+        <td><strong>Suit Expert Coverage</strong></td>
+        <td>% of ONDJ/FMA shifts covered by a certified Suit Expert</td>
+        <td>100% peak-season shifts</td>
+        <td><span class="kpi-tag kpi-weekly">Weekly</span></td>
+      </tr>
+      <tr>
+        <td><strong>LOS Capture Rate</strong></td>
+        <td>% of S&B walk-outs logged in system</td>
+        <td>100% same-day logging</td>
+        <td><span class="kpi-tag kpi-daily">Daily</span></td>
+      </tr>
+      <tr>
+        <td><strong>S&B Sell-Through</strong></td>
+        <td>Units sold ÷ (units sold + closing SOH)</td>
+        <td>≥50% ONDJ; ≥45% FMA</td>
+        <td><span class="kpi-tag kpi-monthly">Monthly</span></td>
+      </tr>
+      <tr>
+        <td><strong>Follow-Up Conversion</strong></td>
+        <td>% of LOS walk-outs who return and purchase after 48-hr WhatsApp follow-up</td>
+        <td>TBD after 1 season baseline</td>
+        <td><span class="kpi-tag kpi-monthly">Monthly</span></td>
+      </tr>
+      <tr>
+        <td><strong>Complete Look Attach Rate</strong></td>
+        <td>% of suit sales that include shirt + at least one accessory</td>
+        <td>≥60% of all S&B bills</td>
+        <td><span class="kpi-tag kpi-monthly">Monthly</span></td>
+      </tr>
+      <tr>
+        <td><strong>Style Availability</strong></td>
+        <td>% of top-ROS EBO styles available at PF on any given day</td>
+        <td>≥80% availability of top-15 styles</td>
+        <td><span class="kpi-tag kpi-weekly">Weekly</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SESSION 4: GROOMING -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="section" id="s4">
+  <div class="section-header">
+    <p class="section-tag">Session 04 — Grooming + Product Care</p>
+    <h2 class="section-title">Look the Part,<br>Sell the Part</h2>
+    <p class="section-desc">A Suit Expert who sells suits must look like one. Grooming is not optional — it's part of the uniform.</p>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <p class="section-tag" style="margin-bottom:16px">DAILY GROOMING CHECKLIST</p>
+      <ul class="rule-list">
+        <li>Neatly ironed uniform — no creases, no stains</li>
+        <li>Trimmed hair and beard (neat, not unkempt)</li>
+        <li>Hair gel applied — hair in place throughout shift</li>
+        <li>Trouser/denim altered to ankle length</li>
+        <li>Matching colour belt and footwear — always</li>
+        <li>Shoes polished and clean</li>
+        <li>Refresh @5 — quick grooming check at 5pm before evening rush</li>
+      </ul>
+    </div>
+    <div>
+      <p class="section-tag" style="margin-bottom:16px">GROOMING KIT — EVERY STORE MUST HAVE</p>
+      <div class="card">
+        <div class="card-body" style="color:rgba(255,255,255,0.8)">
+          <p style="margin-bottom:6px">✓ Hair Gel</p>
+          <p style="margin-bottom:6px">✓ Comb</p>
+          <p style="margin-bottom:6px">✓ Facewash</p>
+          <p style="margin-bottom:6px">✓ Deodorant (Male & Female)</p>
+          <p style="margin-bottom:6px">✓ Lip balm (Female staff)</p>
+          <p>✓ Shoe shiner</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-tag" style="margin-bottom:16px">SUIT BASICS — THE 11 RULES</p>
+  <ul class="rule-list">
+    <li>Shirt cuffs should NOT cover your hands</li>
+    <li>Unfasten your jacket when you sit down</li>
+    <li>NEVER fasten the last button on your suit jacket</li>
+    <li>Jacket collar should fit smoothly against shirt collar</li>
+    <li>Shirt sleeves should slightly peek beneath the jacket (1 inch)</li>
+    <li>If wearing a tie, button the shirt all the way to the top</li>
+    <li>Widest part of tie = widest part of lapel</li>
+    <li>Tip of tie should touch the top of your waistband</li>
+    <li>Trousers should NEVER look baggy</li>
+    <li>Shoes matched according to the colour of your belt</li>
+    <li>Pocket square colour should contrast (not match) your suit</li>
+  </ul>
+
+  <div class="divider"></div>
+
+  <p class="section-tag" style="margin-bottom:16px">PRODUCT CARE — WHAT TO TELL CUSTOMERS</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">👔</div>
+      <div class="card-title">Storing a Suit</div>
+      <div class="card-body">Always hang on a wide wooden hanger — never wire. Keep in a suit bag. Never fold. Allow suit to breathe overnight between wears.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">♨️</div>
+      <div class="card-title">Ironing & Steaming</div>
+      <div class="card-body">Steam is preferred over ironing for suits — prevents shining. If ironing, always use a pressing cloth. Never iron directly on the fabric.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧹</div>
+      <div class="card-title">Cleaning</div>
+      <div class="card-body">Dry clean only for suits — not machine wash. Spot clean small marks with a damp cloth. Dry clean at end of season, not after every wear.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-tag" style="margin-bottom:16px">TIE & POCKET SQUARE — QUICK REFERENCE</p>
+  <div class="two-col">
+    <div class="highlight">
+      <div class="highlight-title">Tie Length Rule</div>
+      <p>The tip of the tie should touch the top of the waistband — not above it, not below it. This is one of the most common errors customers make. Correct it during the trial.</p>
+    </div>
+    <div class="highlight">
+      <div class="highlight-title">Pocket Square Folds</div>
+      <p>Three folds to know: Square Fold (classic formal) · Triangle/Point Fold (smart formal) · Puff Fold (occasion/wedding). Keep a practice pocket square at the counter.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SESSION 5: CERTIFICATION QUIZ -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="section" id="s5">
+  <div class="section-header">
+    <p class="section-tag">Session 05 — Suit Expert Certification <span class="new-badge">New</span></p>
+    <h2 class="section-title">Earn Your<br>Suit Expert Badge</h2>
+    <p class="section-desc">Score 75% or above to earn your Suit Expert certification. 20 questions across product knowledge, measurements, alterations, occasions, hosting and grooming.</p>
+  </div>
+
+  <div class="cert-display">
+    <span class="cert-crown">🏅</span>
+    <div class="cert-title">Suit Expert</div>
+    <div class="cert-sub">Planet Fashion · Certified</div>
+    <div class="cert-desc">Pass this certification and earn the right to be the dedicated Suit Expert for your store's S&B section — especially during peak wedding seasons ONDJ and FMA.</div>
+  </div>
+
+  <div class="quiz-section">
+
+    <!-- REGISTRATION FORM -->
+    <div id="quizRegistration">
+      <div class="highlight" style="margin-bottom:28px">
+        <div class="highlight-title">Before You Begin</div>
+        <p>Enter your details below to start the test. Your name, score and result will be automatically recorded.</p>
+      </div>
+      <div style="display:grid;gap:16px;max-width:500px;margin-bottom:24px">
+        <div>
+          <label style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:8px">Full Name *</label>
+          <input type="text" id="ccaName" placeholder="Enter your full name"
+            style="width:100%;background:#141414;border:1px solid #333;color:var(--white);padding:14px 16px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;"
+            onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='#333'">
+        </div>
+        <div>
+          <label style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:8px">Store Code *</label>
+          <input type="text" id="ccaStoreCode" placeholder="e.g. 9584, 2105"
+            style="width:100%;background:#141414;border:1px solid #333;color:var(--white);padding:14px 16px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;"
+            onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='#333'">
+        </div>
+        <div>
+          <label style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:8px">Store Name *</label>
+          <input type="text" id="ccaStore" placeholder="e.g. PF Jayanagar, PF CP"
+            style="width:100%;background:#141414;border:1px solid #333;color:var(--white);padding:14px 16px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;"
+            onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='#333'">
+        </div>
+        <div id="regError" style="color:#e06060;font-size:13px;display:none">Please fill in all fields before starting.</div>
+        <button onclick="startQuiz()"
+          style="background:var(--gold);color:var(--black);border:none;padding:16px 32px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;width:fit-content;">
+          START TEST →
+        </button>
+      </div>
+    </div>
+
+    <!-- QUIZ (hidden until registration) -->
+    <div id="quizContent" style="display:none">
+      <div class="quiz-header">
+        <div class="q-badge">20 Questions</div>
+        <p>Answer all questions. You need 75% (15/20) to pass. Select your answer and it will be marked right or wrong immediately. Your score is shown at the end.</p>
+      </div>
+
+    <!-- Q1 -->
+    <div class="question-block" data-answer="b">
+      <div class="question-text"><span class="q-num">01.</span> What is the 6-inch drop rule in S&B?</div>
+      <div class="options">
+        <div class="option" onclick="checkAnswer(this, 'a')">A. Jacket length should be 6 inches below waist</div>
+        <div class="option" onclick="checkAnswer(this, 'b')">B. If blazer is size 38, trouser is size 32</div>
+        <div class="option" onclick="checkAnswer(this, 'c')">C. Tie should be 6 inches above the waistband</div>
+        <div class="option" onclick="checkAnswer(this, 'd')">D. Trouser inseam is 6 inches shorter than outseam</div>
+      </div>
+      <div class="q-feedback"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question-block" data-answer="c">
+      <div class="question-text"><span class="q-num">02.</span> On a two-button suit, which button should NEVER be fastened?</div>
+      <div class="options">
+        <div class="option" onclick="checkAnswer(this, 'a')">A. Top button</div>
+        <div class="option" onclick="checkAnswer(this, 'b')">B. Both buttons</div>
+        <div class="option" onclick="checkAnswer(this, 'c')">C. Bottom button</div>
+        <div class="option" onclick="checkAnswer(this, 'd')">D. Either button</div>
+      </div>
+      <div class="q-feedback"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question-block" data-answer="b">
+      <div class="question-text"><span class="q-num">03.</span> How much shirt cuff should be visible below the jacket sleeve?</div>
+      <div class="options">
+        <div class="option" onclick="checkAnswer(this, 'a')">A. No cuff — jacket should end at the wrist</div>
+        <div class="option" onclick="checkAnswer(this, 'b')">B. 1 inch of shirt cuff</div>
+        <div class="option" onclick="checkAnswer(this, 'c')">C. 2 inches of shirt cuff</div>
+        <div class="option" onclick="checkAnswer(this, 'd')">D. Half-inch only</div>
+      </div>
+      <div class="q-feedback"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question-block" data-answer="a">
+      <div class="question-text"><span class="q-num">04.</span> What lapel type is most appropriate for a wedding Baraat suit?</div>
+      <div class="options">
+        <div class="option" onclick="checkAnswer(this, 'a')">A. Peak Lapel</div>
+        <div class="option" onclick="checkAnswer(this, 'b')">B. Notch Lapel</div>
+        <div class="option" onclick="checkAnswer(this, 'c')">C. Shawl Lapel</div>
+        <div class="option" onclick="checkAnswer(this, 'd')">D. No preference — all work equally</div>
+      </div>
+      <div class="q-feedback"></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question-block" data-answer="c">
+      <div class="question-text"><span class="q-num">05.</span> What is the first thing a CCA should do when a wedding customer enters S&B?</div>
+      <div class="options">
+        <div class="option" onclick="checkAnswer(this, 'a')">A. Show the most expensive suit immediately</div>
+        <div class="option" onclick="checkAnswer(this, 'b')">B. Ask for budget first</div>
+        <div class="option" onclick="checkAnswer(this, 'c')">C. Greet, offer water and seating, then ask the occasion</div>
+        <div class="option" onclick="checkAnswer(this, 'd')">D. Ask which brand they prefer</div>
+      </div>
+      <div class="q-feedback"></div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="question-block" data-answer="b">
+      <div class="question-text"><span class="q-num">06.</span> The 'Complete Look' sell sequence is:</div>
+      <div class="options">
+        <div class="option" onclick="checkAnswer(this, 'a')">A. Suit → Belt → Shoes → Shirt → Tie</div>
+        <div class="option" onclick="checkAnswer(this, 'b')">B. Suit → Shirt → Tie → Belt → Shoes</div>
+        <div class="option" onclick="checkAnswer(this, 'c')">C. Suit → Shoes → Tie → Shirt → Belt</div>
+        <div class="option" onclick="checkAnswer(this, 'd')">D. There is no fixed sequence</div>
+      </div>
+      <div class="q-feedback"></div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="question-block" data-answer="c">
+      <div class="question-text"><span class="q-num">07.</span> A wedding customer walks out without buying. What should the CCA do within 48 hours?</div>
+      <div class="options">
+        <div class="option" onclick="checkAnswer(this, 'a')">A. Nothing — if they want to buy they will come back</div>
+        <div class="option" onclick="checkAnswer(this, 'b')">B. Call them immediately and offer a discount</div>
+        <div class="option" onclick="checkAnswer(this, 'c')">C. Send a personalised WhatsApp referencing their occasion and invite them back</div>
+        <div class="option" onclick="checkAnswer(this, 'd')">D. Log the walk-out and wait for SM to follow up</div>
+      </div>
+      <div class="q-feedback"></div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="question-block" data-answer="a">
+      <div class="question-text"><span class="q-num">08.</span> For a big body type, which colour approach is recommended?</div>
+      <div class="options">
+        <div class="option" onclick="checkAnswer(this, 'a')">A. Dark colours — they slim and lengthen</div>
+        <div class="option" onclick="checkAnswer(this, 'b')">B. Light and bright colours for confidence</div>
+        <div class="option" onclick="checkAnswer(this, 'c')">C. Horizontal stripes add height</div>
+        <div class="option" onclick="checkAnswer(this, 'd')">D. No colour preference for big bodies</div>
+      </div>
+      <div class="q-feedback"></div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="question-block" data-answer="b">
+      <div class="question-text"><span class="q-num">09.</span> What is the target LOS Capture Rate?</div>
+      <div class="options">
+        <div class="option" onclick="checkAnswer(this, 'a')">A. 80% within 48 hours</div>
+        <div class="option" onclick="checkAnswer(this, 'b')">B. 100% same-day logging</div>
+        <div class="option" onclick="checkAnswer(this, 'c')">C. 75% by end of week</div>
+        <div class="option" onclick="checkAnswer(this, 'd')">D. No fixed target</div>
+      </div>
+      <div class="q-feedback"></div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="question-block" data-answer="c">
+      <div class="question-text"><span class="q-num">10.</span> Full Canvas construction means:</div>
+      <div class="options">
+        <div class="option" onclick="checkAnswer(this, 'a')">A. The suit is made entirely from cotton canvas</div>
+        <div class="option" onclick="checkAnswer(this, 'b')">B. The lining is full-length</div>
+        <div class="option" onclick="checkAnswer(this, 'c')">C. An internal structure of horse hair and camel hair gives the jacket its shape</div>
+        <div class="option" onclick="checkAnswer(this, 'd')">D. The jacket has no lining — just canvas</div>
+      </div>
+      <div class="q-feedback"></div>
+    </div>
+
+    <!-- Q11 -->
+    <div class="question-block" data-answer="a">
+      <div class="question-text"><span class="q-num">11.</span> Within how many hours should a walk-out follow-up happen?</div>
+      <div class="options">
+        <div class="option" onclick="checkAnswer(this, 'a')">A. 48 hours</div>
+        <div class="option" onclick="checkAnswer(this, 'b')">B. 24 hours</div>
+        <div class="option" onclick="checkAnswer(this, 'c')">C. One week</div>
+        <div class="option" onclick="checkAnswer(this, 'd')">D. No specific timeframe</div>
+      </div>
+      <div class="q-feedback"></div>
+    </div>
+
+    <!-- Q12 -->
+    <div class="question-block" data-answer="d">
+      <div class="question-text"><span class="q-num">12.</span> What is the S&B Sell-Through target for ONDJ season?</div>
+      <div class="options">
+        <div class="option" onclick="checkAnswer(this, 'a')">A. 40%</div>
+        <div class="option" onclick="checkAnswer(this, 'b')">B. 45%</div>
+        <div class="option" onclick="checkAnswer(this, 'c')">C. 60%</div>
+        <div class="option" onclick="checkAnswer(this, 'd')">D. ≥50%</div>
+      </div>
+      <div class="q-feedback"></div>
+    </div>
+
+    <!-- Q13 -->
+    <div class="question-block" data-answer="b">
+      <div class="question-text"><span class="q-num">13.</span> Which fabric property makes wool blend suits expensive?</div>
+      <div class="options">
+        <div class="option" onclick="checkAnswer(this, 'a')">A. Wool is the cheapest natural fibre</div>
+        <div class="option" onclick="checkAnswer(this, 'b')">B. Wool is durable, breathable, wrinkle-resistant and has great colour retention</div>
+        <div class="option" onclick="checkAnswer(this, 'c')">C. Wool suits require no dry cleaning</div>
+        <div class="option" onclick="checkAnswer(this, 'd')">D. Wool is heavier than polyester</div>
+      </div>
+      <div class="q-feedback"></div>
+    </div>
+
+    <!-- Q14 -->
+    <div class="question-block" data-answer="c">
+      <div class="question-text"><span class="q-num">14.</span> The groom's token of celebration on purchase is worth approximately:</div>
+      <div class="options">
+        <div class="option" onclick="checkAnswer(this, 'a')">A. ₹50–100</div>
+        <div class="option" onclick="checkAnswer(this, 'b')">B. ₹500+</div>
+        <div class="option" onclick="checkAnswer(this, 'c')">C. ₹150–200</div>
+        <div class="option" onclick="checkAnswer(this, 'd')">D. Free samples from brand</div>
+      </div>
+      <div class="q-feedback"></div>
+    </div>
+
+    <!-- Q15 -->
+    <div class="question-block" data-answer="a">
+      <div class="question-text"><span class="q-num">15.</span> Which lapel is most common on standard PF suits and works for both casual and professional?</div>
+      <div class="options">
+        <div class="option" onclick="checkAnswer(this, 'a')">A. Notch Lapel</div>
+        <div class="option" onclick="checkAnswer(this, 'b')">B. Peak Lapel</div>
+        <div class="option" onclick="checkAnswer(this, 'c')">C. Shawl Lapel</div>
+        <div class="option" onclick="checkAnswer(this, 'd')">D. All lapels are equally common</div>
+      </div>
+      <div class="q-feedback"></div>
+    </div>
+
+    <!-- Q16 -->
+    <div class="question-block" data-answer="d">
+      <div class="question-text"><span class="q-num">16.</span> When presenting a suit to a wedding customer, you should:</div>
+      <div class="options">
+        <div class="option" onclick="checkAnswer(this, 'a')">A. Show only the suit and let them choose accessories separately</div>
+        <div class="option" onclick="checkAnswer(this, 'b')">B. Start with the most expensive option</div>
+        <div class="option" onclick="checkAnswer(this, 'c')">C. Ask the budget before showing anything</div>
+        <div class="option" onclick="checkAnswer(this, 'd')">D. Present a complete styled look including shirt, tie, and shoes from the beginning</div>
+      </div>
+      <div class="q-feedback"></div>
+    </div>
+
+    <!-- Q17 -->
+    <div class="question-block" data-answer="b">
+      <div class="question-text"><span class="q-num">17.</span> The Grooming rule "Refresh @5" means:</div>
+      <div class="options">
+        <div class="option" onclick="checkAnswer(this, 'a')">A. Clean the store at 5 PM</div>
+        <div class="option" onclick="checkAnswer(this, 'b')">B. A quick personal grooming check at 5 PM before evening rush</div>
+        <div class="option" onclick="checkAnswer(this, 'c')">C. Offer fresh water every 5 hours</div>
+        <div class="option" onclick="checkAnswer(this, 'd')">D. Reset mannequins at 5 PM</div>
+      </div>
+      <div class="q-feedback"></div>
+    </div>
+
+    <!-- Q18 -->
+    <div class="question-block" data-answer="c">
+      <div class="question-text"><span class="q-num">18.</span> What occasion calls for a 3-piece Bandhgala or statement ceremonial suit?</div>
+      <div class="options">
+        <div class="option" onclick="checkAnswer(this, 'a')">A. Mehendi</div>
+        <div class="option" onclick="checkAnswer(this, 'b')">B. Reception</div>
+        <div class="option" onclick="checkAnswer(this, 'c')">C. Baraat</div>
+        <div class="option" onclick="checkAnswer(this, 'd')">D. Business meeting</div>
+      </div>
+      <div class="q-feedback"></div>
+    </div>
+
+    <!-- Q19 -->
+    <div class="question-block" data-answer="a">
+      <div class="question-text"><span class="q-num">19.</span> When measuring chest size, how many fingers should you insert under the tape before finalising suit size?</div>
+      <div class="options">
+        <div class="option" onclick="checkAnswer(this, 'a')">A. 1–2 fingers</div>
+        <div class="option" onclick="checkAnswer(this, 'b')">B. No fingers — tape should be snug</div>
+        <div class="option" onclick="checkAnswer(this, 'c')">C. 3–4 fingers</div>
+        <div class="option" onclick="checkAnswer(this, 'd')">D. Depends on the customer</div>
+      </div>
+      <div class="q-feedback"></div>
+    </div>
+
+    <!-- Q20 -->
+    <div class="question-block" data-answer="b">
+      <div class="question-text"><span class="q-num">20.</span> What is the most common trouser alteration done at PF?</div>
+      <div class="options">
+        <div class="option" onclick="checkAnswer(this, 'a')">A. Seat adjustment</div>
+        <div class="option" onclick="checkAnswer(this, 'b')">B. Hem/length shortening to the perfect one-crease break</div>
+        <div class="option" onclick="checkAnswer(this, 'c')">C. Thigh tapering</div>
+        <div class="option" onclick="checkAnswer(this, 'd')">D. Waist letting out</div>
+      </div>
+      <div class="q-feedback"></div>
+    </div>
+
+    <!-- SCORE -->
+    <div class="quiz-score" id="quizScore">
+      <div id="scoreNameDisplay" style="font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px"></div>
+      <div class="score-num" id="scoreNum">0/20</div>
+      <div class="score-label">Questions Correct</div>
+      <div class="score-verdict" id="scoreVerdict"></div>
+      <div id="scoreMsg" style="font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:8px"></div>
+      <div id="sheetStatus" style="font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:20px"></div>
+      <button class="btn-retry" onclick="resetQuiz()">Retake Test</button>
+    </div>
+  </div>
+  </div><!-- close quizContent -->
+</div><!-- close quiz-section -->
+</div>
+
+<script>
+  // ── GOOGLE SHEETS SCRIPT URL ──────────────────────────────
+  // Replace this with your Google Apps Script Web App URL after setup
+  const SHEET_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+  // ── NAV ──────────────────────────────────────────────────
+  function showSection(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleAccordion(header) {
+    const body = header.nextElementSibling;
+    const toggle = header.querySelector('.toggle');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open');
+    toggle.textContent = isOpen ? '+' : '−';
+  }
+
+  // ── REGISTRATION ─────────────────────────────────────────
+  let ccaName = '', ccaStoreCode = '', ccaStore = '';
+
+  function startQuiz() {
+    ccaName  = document.getElementById('ccaName').value.trim();
+    ccaStoreCode = document.getElementById('ccaStoreCode').value.trim();
+    ccaStore = document.getElementById('ccaStore').value.trim();
+    const err = document.getElementById('regError');
+
+    if (!ccaName || !ccaStoreCode || !ccaStore) {
+      err.style.display = 'block';
+      return;
+    }
+    err.style.display = 'none';
+    document.getElementById('quizRegistration').style.display = 'none';
+    document.getElementById('quizContent').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── QUIZ LOGIC ────────────────────────────────────────────
+  let totalAnswered = 0;
+  const TOTAL = 20;
+
+  function checkAnswer(optionEl, chosen) {
+    const block = optionEl.closest('.question-block');
+    if (block.dataset.answered) return;
+
+    const correct = block.dataset.answer;
+    const isCorrect = chosen === correct;
+
+    block.dataset.answered = 'true';
+    block.dataset.userCorrect = isCorrect ? '1' : '0';
+
+    const opts = block.querySelectorAll('.option');
+    const feedback = block.querySelector('.q-feedback');
+
+    opts.forEach(o => o.classList.add('disabled'));
+    optionEl.classList.add(isCorrect ? 'correct' : 'wrong');
+
+    if (!isCorrect) {
+      opts.forEach(o => {
+        const letter = o.textContent.trim()[0].toLowerCase();
+        if (letter === correct) o.classList.add('correct');
+      });
+    }
+
+    feedback.classList.add('show', isCorrect ? 'ok' : 'bad');
+    feedback.textContent = isCorrect
+      ? '✓ Correct!'
+      : '✗ Incorrect — review the highlighted answer.';
+
+    totalAnswered++;
+    if (totalAnswered === TOTAL) showScore();
+  }
+
+  function showScore() {
+    let cnt = 0;
+    document.querySelectorAll('.question-block[data-answered]').forEach(b => {
+      if (b.dataset.userCorrect === '1') cnt++;
+    });
+
+    const pct  = Math.round((cnt / TOTAL) * 100);
+    const passed = pct >= 75;
+    const now  = new Date();
+    const dateStr = now.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+    const timeStr = now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+
+    document.getElementById('scoreNameDisplay').textContent = ccaName + ' · ' + ccaStoreCode + ' · ' + ccaStore;
+    document.getElementById('scoreNum').textContent = cnt + '/' + TOTAL;
+
+    const verdictEl = document.getElementById('scoreVerdict');
+    const msgEl     = document.getElementById('scoreMsg');
+
+    if (passed) {
+      verdictEl.textContent = '🏅 CERTIFIED — Suit Expert Badge Earned!';
+      verdictEl.className   = 'score-verdict verdict-pass';
+      msgEl.textContent     = 'Congratulations ' + ccaName + '! You scored ' + pct + '%. You are now a Planet Fashion Suit Expert. Your SM will issue your badge.';
+    } else {
+      verdictEl.textContent = '✗ Not Yet — ' + pct + '% (Need 75%)';
+      verdictEl.className   = 'score-verdict verdict-fail';
+      msgEl.textContent     = 'You scored ' + pct + '%. Review the sessions and retake. You need ' + (15 - cnt) + ' more correct answers to pass.';
+    }
+
+    document.getElementById('quizScore').classList.add('show');
+    document.getElementById('quizScore').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // ── SEND TO GOOGLE SHEET ──
+    submitToSheet(ccaName, ccaStoreCode, ccaStore, cnt, TOTAL, pct, passed, dateStr, timeStr);
+  }
+
+  async function submitToSheet(name, storeCode, store, score, total, pct, passed, date, time) {
+    if (SHEET_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') return;
+    const statusEl = document.getElementById('sheetStatus');
+    statusEl.textContent = 'Saving result...';
+    try {
+      await fetch(SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, storeCode, store, score, total, percentage: pct, result: passed ? 'PASS' : 'FAIL', date, time })
+      });
+      statusEl.textContent = '✓ Result saved to manager sheet';
+    } catch (e) {
+      statusEl.textContent = 'Could not save to sheet — please inform your SM manually.';
+    }
+  }
+
+  function resetQuiz() {
+    document.querySelectorAll('.question-block').forEach(b => {
+      delete b.dataset.answered;
+      delete b.dataset.userCorrect;
+      b.querySelectorAll('.option').forEach(o => { o.className = 'option'; });
+      const fb = b.querySelector('.q-feedback');
+      fb.className = 'q-feedback';
+      fb.textContent = '';
+    });
+    totalAnswered = 0;
+    document.getElementById('quizScore').classList.remove('show');
+    document.getElementById('scoreNameDisplay').textContent = '';
+    // Show registration again for next person
+    ccaName = ''; ccaStoreCode = ''; ccaStore = '';
+    document.getElementById('ccaName').value = '';
+    document.getElementById('ccaStoreCode').value = '';
+    document.getElementById('ccaStore').value = '';
+    document.getElementById('quizRegistration').style.display = 'block';
+    document.getElementById('quizContent').style.display = 'none';
+  }
+</script>
+</body>
+</html>
