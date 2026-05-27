@@ -1483,7 +1483,7 @@
         <div class="option" onclick="checkAnswer(this, 'b')">B. Hem/length shortening to the perfect one-crease break</div>
         <div class="option" onclick="checkAnswer(this, 'c')">C. Thigh tapering</div>
         <div class="option" onclick="checkAnswer(this, 'd')">D. Waist letting out</div>
-      </div>s
+      </div>
       <div class="q-feedback"></div>
     </div>
 
@@ -1495,7 +1495,7 @@
       <div class="score-verdict" id="scoreVerdict"></div>
       <div id="scoreMsg" style="font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:8px"></div>
       <div id="sheetStatus" style="font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:20px"></div>
-      <button class="btn-retry" onclick="resetQuiz()">Retake Test</button>
+      <button class="btn-retry" id="retakeBtn" onclick="resetQuiz()">Retake Test</button>
     </div>
   </div>
   </div><!-- close quizContent -->
@@ -1505,7 +1505,7 @@
 <script>
   // ── GOOGLE SHEETS SCRIPT URL ──────────────────────────────
   // Replace this with your Google Apps Script Web App URL after setup
-  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxD-SmowhWKCwesNpmEvwhmu7bFLSiz_0xznIOjfm8cj6Xk758SNPu9nKEpVdiyMGqd/exec';
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbybpIGgtyKtBQT0PpZDXrT0wkpMz4U1Pbq3A6d0ARciZiBhM_5piCFTEU-3va_7FUBbJQ/exec';
 
   // ── NAV ──────────────────────────────────────────────────
   function showSection(id, btn) {
@@ -1528,15 +1528,49 @@
   let ccaName = '', ccaStoreCode = '', ccaStore = '';
 
   function startQuiz() {
-    ccaName  = document.getElementById('ccaName').value.trim();
-    ccaStoreCode = document.getElementById('ccaStoreCode').value.trim();
-    ccaStore = document.getElementById('ccaStore').value.trim();
-    const err = document.getElementById('regError');
+    ccaName       = document.getElementById('ccaName').value.trim();
+    ccaStoreCode  = document.getElementById('ccaStoreCode').value.trim();
+    ccaStore      = document.getElementById('ccaStore').value.trim();
+    const err     = document.getElementById('regError');
 
     if (!ccaName || !ccaStoreCode || !ccaStore) {
+      err.style.color = '#e06060';
+      err.textContent = 'Please fill in all fields before starting.';
       err.style.display = 'block';
       return;
     }
+
+    const attemptKey = 'pf_quiz_' + ccaStoreCode.toLowerCase() + '_' + ccaName.toLowerCase().replace(/\s+/g,'_');
+    const saved = localStorage.getItem(attemptKey);
+    const data  = saved ? JSON.parse(saved) : { attempts: 0, lastAttemptDate: null };
+    const MAX_ATTEMPTS = 3;
+    const COOLDOWN_DAYS = 10;
+
+    // Permanently blocked after 3 attempts
+    if (data.attempts >= MAX_ATTEMPTS) {
+      err.style.color = '#e06060';
+      err.textContent = 'You have used all 3 attempts for this test. Please speak to your SM.';
+      err.style.display = 'block';
+      return;
+    }
+
+    // Within 10-day cooldown
+    if (data.lastAttemptDate) {
+      const lastDate  = new Date(data.lastAttemptDate);
+      const today     = new Date();
+      const diffDays  = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+      if (diffDays < COOLDOWN_DAYS) {
+        const daysLeft   = COOLDOWN_DAYS - diffDays;
+        const nextDate   = new Date(lastDate);
+        nextDate.setDate(nextDate.getDate() + COOLDOWN_DAYS);
+        const nextStr    = nextDate.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+        err.style.color  = '#e8b96a';
+        err.textContent  = 'You can attempt again on ' + nextStr + '. (' + daysLeft + ' day' + (daysLeft > 1 ? 's' : '') + ' remaining) — Attempt ' + data.attempts + ' of ' + MAX_ATTEMPTS + ' used.';
+        err.style.display = 'block';
+        return;
+      }
+    }
+
     err.style.display = 'none';
     document.getElementById('quizRegistration').style.display = 'none';
     document.getElementById('quizContent').style.display = 'block';
@@ -1610,20 +1644,44 @@
     document.getElementById('quizScore').classList.add('show');
     document.getElementById('quizScore').scrollIntoView({ behavior: 'smooth', block: 'center' });
 
+    // Save attempt data
+    const attemptKey = 'pf_quiz_' + ccaStoreCode.toLowerCase() + '_' + ccaName.toLowerCase().replace(/\s+/g,'_');
+    const saved = localStorage.getItem(attemptKey);
+    const data  = saved ? JSON.parse(saved) : { attempts: 0, lastAttemptDate: null };
+    data.attempts += 1;
+    data.lastAttemptDate = new Date().toISOString();
+    data.lastScore = cnt;
+    data.lastPct   = pct;
+    data.lastResult = passed ? 'PASS' : 'FAIL';
+    localStorage.setItem(attemptKey, JSON.stringify(data));
+
+    // Show remaining attempts or lock message
+    const attemptsLeft = 3 - data.attempts;
+    const msgEl = document.getElementById('scoreMsg');
+    if (attemptsLeft > 0 && !passed) {
+      msgEl.textContent += ' You have ' + attemptsLeft + ' attempt' + (attemptsLeft > 1 ? 's' : '') + ' remaining. You can retake after 10 days.';
+      document.getElementById('retakeBtn').style.display = 'none';
+    } else {
+      document.getElementById('retakeBtn').style.display = 'none';
+    }
+
     // ── SEND TO GOOGLE SHEET ──
     submitToSheet(ccaName, ccaStoreCode, ccaStore, cnt, TOTAL, pct, passed, dateStr, timeStr);
   }
 
   async function submitToSheet(name, storeCode, store, score, total, pct, passed, date, time) {
-    if (SHEET_URL === 'https://script.google.com/macros/s/AKfycbySe57XrBY9ZQqO92WC8RMUDwnrX5xlRJQ0Xmd_EZlOIDhZncfmhqzoA-YEuoPZlGkZ/exec') return;
+    if (SHEET_URL === 'https://script.google.com/macros/s/AKfycbybpIGgtyKtBQT0PpZDXrT0wkpMz4U1Pbq3A6d0ARciZiBhM_5piCFTEU-3va_7FUBbJQ/exec') return;
     const statusEl = document.getElementById('sheetStatus');
     statusEl.textContent = 'Saving result...';
+    const attemptKey = 'pf_quiz_' + storeCode.toLowerCase() + '_' + name.toLowerCase().replace(/\s+/g,'_');
+    const saved = localStorage.getItem(attemptKey);
+    const attemptNum = saved ? JSON.parse(saved).attempts : 1;
     try {
       await fetch(SHEET_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, storeCode, store, score, total, percentage: pct, result: passed ? 'PASS' : 'FAIL', date, time })
+        body: JSON.stringify({ name, storeCode, store, score, total, percentage: pct, result: passed ? 'PASS' : 'FAIL', attempt: 'Attempt ' + attemptNum + ' of 3', date, time })
       });
       statusEl.textContent = '✓ Result saved to manager sheet';
     } catch (e) {
