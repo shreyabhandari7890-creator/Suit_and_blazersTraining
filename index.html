@@ -1497,15 +1497,14 @@
       <div id="sheetStatus" style="font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:20px"></div>
       <button class="btn-retry" id="retakeBtn" onclick="resetQuiz()">Retake Test</button>
     </div>
-  </div>
   </div><!-- close quizContent -->
 </div><!-- close quiz-section -->
-</div>
+</div><!-- close s5 section -->
 
 <script>
   // ── GOOGLE SHEETS SCRIPT URL ──────────────────────────────
   // Replace this with your Google Apps Script Web App URL after setup
-  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbybpIGgtyKtBQT0PpZDXrT0wkpMz4U1Pbq3A6d0ARciZiBhM_5piCFTEU-3va_7FUBbJQ/exec';
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwnTJAuN9zl1Op1fYH96KYBob36nO77sxdV8Mlel1HuIu0Z5fB2TcyFxbiy64Dm6VM00g/exec';
 
   // ── NAV ──────────────────────────────────────────────────
   function showSection(id, btn) {
@@ -1657,20 +1656,17 @@
 
     // Show remaining attempts or lock message
     const attemptsLeft = 3 - data.attempts;
-    const msgEl = document.getElementById('scoreMsg');
     if (attemptsLeft > 0 && !passed) {
       msgEl.textContent += ' You have ' + attemptsLeft + ' attempt' + (attemptsLeft > 1 ? 's' : '') + ' remaining. You can retake after 10 days.';
-      document.getElementById('retakeBtn').style.display = 'none';
-    } else {
-      document.getElementById('retakeBtn').style.display = 'none';
     }
+    document.getElementById('retakeBtn').style.display = 'none';
 
     // ── SEND TO GOOGLE SHEET ──
     submitToSheet(ccaName, ccaStoreCode, ccaStore, cnt, TOTAL, pct, passed, dateStr, timeStr);
   }
 
   async function submitToSheet(name, storeCode, store, score, total, pct, passed, date, time) {
-    if (SHEET_URL === 'https://script.google.com/macros/s/AKfycbybpIGgtyKtBQT0PpZDXrT0wkpMz4U1Pbq3A6d0ARciZiBhM_5piCFTEU-3va_7FUBbJQ/exec') return;
+    if (SHEET_URL === 'https://script.google.com/macros/s/AKfycbwnTJAuN9zl1Op1fYH96KYBob36nO77sxdV8Mlel1HuIu0Z5fB2TcyFxbiy64Dm6VM00g/exec') return;
     const statusEl = document.getElementById('sheetStatus');
     statusEl.textContent = 'Saving result...';
     const attemptKey = 'pf_quiz_' + storeCode.toLowerCase() + '_' + name.toLowerCase().replace(/\s+/g,'_');
